@@ -1,6 +1,6 @@
 package org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio;
 
-/*
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -14,9 +14,9 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Reserva;
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Tramo;
 import org.junit.Test;
-*/
+
 public class ReservaTest {
-	/*
+	
 	private static final String ERROR_EXCEPCION = "Debería haber saltado la excepción.";
 	private static final String ERROR_NO_EXCEPCION = "No debería haber saltado la excepción.";
 	private static final String nombreProfesor = "José Ramón";
@@ -130,5 +130,5 @@ public class ReservaTest {
 				+ ", aula=nombre Aula=Salón de actos, permanencia=dia=01/12/2018, tramo=Mañana";
 		assertEquals(cadenaEsperada, reserva.toString());
 	}
-*/
+
 }

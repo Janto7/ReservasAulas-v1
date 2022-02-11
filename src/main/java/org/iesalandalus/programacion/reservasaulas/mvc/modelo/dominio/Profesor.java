@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 public class Profesor {
 
 	private static final String ER_TELEFONO = "(9|6)[0-9]{8}";
-	private static final String ER_CORREO = ".+@[a-zA-Z]+\\.[a-zA-Z]+";
+	private static final String ER_CORREO = "\\w+(?:\\.\\w+)*@\\w+\\.\\w{2,5}";
 
 	private String nombre;
 	private String correo;
