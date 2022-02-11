@@ -71,18 +71,19 @@ public class Reservas {
 		}
 
 	}
-	
+
 	/*
-	 * Estos métodos no les he encontrado ninguna funcionalidad en está clase.
-	 * He intentando sacarlos pidiendo lo que piden y llegando a comprobar los resultados
-	 * parecen correctos
+	 * Estos métodos no les he encontrado ninguna funcionalidad en está clase. He
+	 * intentando sacarlos pidiendo lo que piden y llegando a comprobar los
+	 * resultados que parecen correctos
 	 */
-	
+
 	/*
-	 * El método esMesSiguienteOPosterior no lo he terminado de entender muy bien, pero tras darle varias
-	 * vueltas he llegado a la conclusión que debe comprobar si la fecha de la reserva es o un mes siguiente
-	 * a la fecha actual, o un mes posterior al mes siguiente a la fecha actual.
-	 * 
+	 * El método esMesSiguienteOPosterior no lo he terminado de entender muy bien,
+	 * pero tras darle varias vueltas he llegado a la conclusión que debe comprobar
+	 * si la fecha de la reserva es o un mes siguiente a la fecha actual, o un mes
+	 * posterior al mes siguiente a la fecha actual. Es decir que este comprendida
+	 * entre los dos siguientes meses a la fecha actual.
 	 */
 
 	private boolean esMesSiguienteOPosterior(Reserva reserva) {

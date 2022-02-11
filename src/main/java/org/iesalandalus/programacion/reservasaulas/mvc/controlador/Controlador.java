@@ -12,8 +12,9 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Reserva;
 import org.iesalandalus.programacion.reservasaulas.mvc.vista.Vista;
 
 public class Controlador {
-
+	// -----> vista (0,1)
 	private Vista vista;
+	// -----> modelo (0,1)
 	private Modelo modelo;
 
 	public Controlador(Modelo modelo, Vista vista) {

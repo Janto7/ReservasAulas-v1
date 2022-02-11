@@ -163,11 +163,13 @@ public class Vista {
 
 	public void realizarReserva() {
 
+		Consola.mostrarCabecera("Realizar Reserva");
+
 		try {
 
 			Profesor profesor = null;
 			controlador.realizarReserva(leerReserva(profesor));
-			System.out.println("Reserva insertada correctamente, " + NOMBRE_VALIDO + "/" + CORREO_VALIDO + ".");
+			System.out.println("Reserva insertada correctamente.\n " + NOMBRE_VALIDO + "/" + CORREO_VALIDO + ".");
 			// Capturamos todas las posibles excepciones al hacer una reserva
 		} catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
 			System.out.println(e.getMessage());
@@ -178,23 +180,28 @@ public class Vista {
 	 * Utilizo el método leerNombreProfesor de la clase Consola para realizar una
 	 * lectura de reserva limpia, donde solo se pidan los datos concretos para
 	 * realizar la reserva.(Omitimos datos innecesarios como tener que introducir su
-	 * correo y teléfono, que ya estan registrados en el sistema)
+	 * correo y teléfono, que ya estan registrados en el sistema). En terminos de
+	 * usabilidad me parece mas eficiente.
 	 */
 	private Reserva leerReserva(Profesor profesor) {
-		Consola.mostrarCabecera("Realizar Reserva");
+		Consola.mostrarCabecera("Leer Reserva");
 
 		String nombreAula;
 		String nombreProfesor;
 		List<String> profesores = controlador.representarProfesores();
 		List<String> aulas = controlador.representarAulas();
-		String correoProfesor = new String();
-		String correoProfesorLimpio = new String();
-
+		String correoProfesorConTelefono = new String();
+		String correoProfesorSinTelefono = new String();
+		String telefonoProfesor = new String();
+		String datosProfesor = null;
 		Reserva reserva = null;
 		Aula aula = null;
 		Permanencia permanencia = null;
+
 		boolean aulaRegistrada = false;
 		boolean profesorRegistrado = false;
+		boolean telefonoRegistrado = false;
+
 		try {
 			nombreProfesor = Consola.leerNombreProfesor();
 			nombreAula = Consola.leerNombreAula();
@@ -209,23 +216,40 @@ public class Vista {
 				 */
 				if (nombreProfesor.equalsIgnoreCase(
 						datosProfesores.substring(datosProfesores.indexOf('=') + 1, datosProfesores.indexOf(',')))) {
+					datosProfesor = datosProfesores;
 					profesorRegistrado = true;
+				}
+			}
+
+			if (datosProfesor != null) {
+
+				if (datosProfesor.contains("telefono")) {
+					telefonoRegistrado = true;
+
+				}
+
+				if (telefonoRegistrado) {
 
 					/*
 					 * Obtengo el correo del profesor valiendome de los métodos indexOf y
 					 * lastIndexOf, que me extraen la cadena exacta del correo del profesor.
 					 *
 					 */
-					correoProfesor = datosProfesores.substring(datosProfesores.indexOf('=') + 1,
-							datosProfesores.lastIndexOf(','));
+					correoProfesorConTelefono = datosProfesor
+							.substring(datosProfesor.indexOf(',') + 2, datosProfesor.lastIndexOf(','))
+							.replace("correo=", "");
+					telefonoProfesor = datosProfesor.substring(datosProfesor.lastIndexOf('=') + 1);
+
+				} else {
 					/*
-					 * elimino de la cadena los datos sobrantes para tener un correo limpio para
-					 * poder pasarlo por parametro.
+					 * Si el profesor no tiene un teléfono asignado la secuencia de extacción de la
+					 * subcadena no puede ser la misma.
 					 */
-					correoProfesorLimpio = correoProfesor.replace(nombreProfesor + ", correo=", "");
+					correoProfesorSinTelefono = datosProfesor.substring(datosProfesor.lastIndexOf('=') + 1);
 
 				}
 			}
+
 			/*
 			 * Repito el mismo proceso para validar el aula existe en el sistema, esta vez
 			 * valiendome del método replace() para quedarme con la cadena deseada.
@@ -239,18 +263,34 @@ public class Vista {
 				}
 			}
 
-			if (profesorRegistrado && aulaRegistrada) {
+			if (!profesorRegistrado) {
+
+				System.out.println(ERROR + "No se ha podido encontrar el profesor en el sistema.");
+			}
+
+			if (!aulaRegistrada) {
+				System.out.println(ERROR + "No se ha podido encontrar el aula en el sistema.");
+
+				/*
+				 * Si el teléfono no está registrado usamos el constructor (nombre, correo)
+				 */
+
+			} else if (profesorRegistrado && aulaRegistrada && !telefonoRegistrado) {
 				permanencia = new Permanencia(Consola.leerDia(), Consola.leerTramo());
 
-				Profesor profesorALeer = new Profesor(nombreProfesor, correoProfesorLimpio);
+				Profesor profesorALeer = new Profesor(nombreProfesor, correoProfesorSinTelefono);
 
 				reserva = new Reserva(profesorALeer, aula, permanencia);
+				/*
+				 * Si el teléfono está registrado usamos el constructor (nombre, correo,
+				 * telefono)
+				 */
+			} else if (profesorRegistrado && aulaRegistrada && telefonoRegistrado) {
+				permanencia = new Permanencia(Consola.leerDia(), Consola.leerTramo());
 
-			} else if (!profesorRegistrado) {
-				System.out.println(ERROR + "No está registrado el profesor: " + nombreProfesor + " en el sistema.");
+				Profesor profesorALeer = new Profesor(nombreProfesor, correoProfesorConTelefono, telefonoProfesor);
 
-			} else if (!aulaRegistrada) {
-				System.out.println(ERROR + "No está registrada el aula: " + nombreAula + " en el sistema.");
+				reserva = new Reserva(profesorALeer, aula, permanencia);
 
 			}
 
@@ -281,7 +321,7 @@ public class Vista {
 
 		Consola.mostrarCabecera("Listado de Reservas");
 
-		List<String> reservas = controlador.representarProfesores();
+		List<String> reservas = controlador.representarReservas();
 		// Comprobamos hay elementos en nuestra lista comprobando su tamaño
 		if (reservas.size() > 0) {
 			for (Iterator<String> it = reservas.iterator(); it.hasNext();) {
@@ -299,8 +339,8 @@ public class Vista {
 		if (reservas.size() > 0) {
 			for (Iterator<Reserva> it = reservas.iterator(); it.hasNext();) {
 				Reserva reserva = it.next();
-			
-					System.out.println(reserva);
+
+				System.out.println(reserva);
 			}
 		} else {
 			System.out.println("No hay reservas, para dicha aula.");
@@ -313,8 +353,8 @@ public class Vista {
 		if (reservas.size() > 0) {
 			for (Iterator<Reserva> it = reservas.iterator(); it.hasNext();) {
 				Reserva reserva = it.next();
-			
-					System.out.println(reserva);
+
+				System.out.println(reserva);
 			}
 		} else {
 			System.out.println("No hay reservas, para dicho profesor.");
@@ -328,8 +368,8 @@ public class Vista {
 		if (reservas.size() > 0) {
 			for (Iterator<Reserva> it = reservas.iterator(); it.hasNext();) {
 				Reserva reserva = it.next();
-			
-					System.out.println(reserva);
+
+				System.out.println(reserva);
 			}
 		} else {
 			System.out.println("No hay reservas, para dicha permanencia.");

@@ -23,7 +23,7 @@ public class Consola {
 	}
 
 	public static void mostrarCabecera(String mensaje) {
-		
+
 		System.out.printf("%n%s%n", mensaje);
 		String formatoStr = "%0" + mensaje.length() + "d%n";
 		System.out.println(String.format(formatoStr, 0).replace("0", "-"));
@@ -45,22 +45,21 @@ public class Consola {
 	}
 
 	public static String leerNombreAula() {
-	
+
 		System.out.print("Introduce el nombre del aula: ");
 		String nombreAula = Entrada.cadena();
 		return nombreAula;
 	}
 
 	public static Profesor leerProfesor() {
-		
-			System.out.print("Introduce el nombre del profesor: ");
-			String nombre = Entrada.cadena();
+
+		System.out.print("Introduce el nombre del profesor: ");
+		String nombre = Entrada.cadena();
 		System.out.print("Introduce el correo del profesor: ");
 		String correo = Entrada.cadena();
 		System.out.print("Introduce el teléfono del profesor: ");
 		String telefono = Entrada.cadena();
-		Profesor profesor = (telefono == null || telefono.trim().equals(""))
-				? new Profesor(nombre, correo)
+		Profesor profesor = (telefono == null || telefono.trim().equals("")) ? new Profesor(nombre, correo)
 				: new Profesor(nombre, correo, telefono);
 
 		return profesor;

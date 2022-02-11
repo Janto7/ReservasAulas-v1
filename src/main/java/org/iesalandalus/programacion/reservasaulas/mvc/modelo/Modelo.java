@@ -14,10 +14,11 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.Reservas;
 
 public class Modelo {
 
-	
-
+	// -----> profesores (0,1)
 	private Profesores profesores;
+	// -----> aulas (0,1)
 	private Aulas aulas;
+	// -----> reservas (0,1)
 	private Reservas reservas;
 
 	public Modelo() {

@@ -41,7 +41,7 @@ public class Profesor {
 		}
 		this.nombre = formateaNombre(nombre);
 	}
-	
+
 	private String formateaNombre(String nombre) {
 
 		// Paso 1 :Paso: Creamos un objeto del método StringTokenizer
@@ -67,7 +67,6 @@ public class Profesor {
 		nombre = nombreCompleto.trim();
 		return nombre;
 	}
-
 
 	public void setCorreo(String correo) {
 		if (correo == null) {
